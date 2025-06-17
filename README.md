@@ -1,6 +1,3 @@
-**Full Stack Web Development Projects - ApexPlanet Internship**
-
-Welcome to my GitHub repository showcasing the **projects and tasks** I completed as part of the **45-Day Full Stack Web Development Internship** at **ApexPlanet Software Pvt. Ltd.**
 # Full Stack Web Development Projects - ApexPlanet Internship
 
 Welcome to my GitHub repository showcasing the **projects and tasks** I completed as part of the **45-Day Full Stack Web Development Internship** at **ApexPlanet Software Pvt. Ltd.**
