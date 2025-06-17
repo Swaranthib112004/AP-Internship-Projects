@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0e0e0e;
+    color: #f0f0f0;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+  
+  header {
+    background-color: #111;
+    padding: 20px 0;
+    border-bottom: 2px solid #222;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 2rem;
+    background: linear-gradient(90deg, #00f5d4, #9b5de5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #00f5d4;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #f15bb5;
+  }
+  
+  .section {
+    padding: 60px 20px;
+    text-align: center;
+  }
+  
+  .alt-bg {
+    background-color: #1a1a1a;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: #9b5de5;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  ul li {
+    margin: 10px 0;
+    color: #f15bb5;
+  }
+  
+  .services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .service-card {
+    background: #222;
+    color: #00f5d4;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+  }
+  
+  .service-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .contact-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #00f5d4;
+    color: #111;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  
+  .contact-btn:hover {
+    background-color: #9b5de5;
+    color: white;
+  }
+  
+  footer {
+    background-color: #111;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+  }
