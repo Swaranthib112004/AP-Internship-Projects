@@ -31,16 +31,24 @@ This project was developed as part of an intermediate-level task to practice and
 
 ## 📁 Project Structure
 
-📦 contact-todo-hub/ │ ├── index.html          # Main HTML file ├── style.css           # Styling using Flexbox, Grid, and gradients ├── app.js              # JS for form validation, modal, and to-do logic └── README.md           # Project documentation
+ contact-todo-hub│ 
+- ├── index.html 
+ Main HTML file
+- ├── style.css
+Styling using Flexbox, Grid, and gradients 
+- ├── app.js 
+JS for form validation, modal, and to-do logic 
+- ├── README.md   
+ Project documentation
 
 ---
 
-💡 Key Technologies Used
+**💡 Key Technologies Used**
 
-HTML5
+- HTML5
 
-CSS3 (Flexbox, Grid, Transitions, Media Queries)
+- CSS3 (Flexbox, Grid, Transitions, Media Queries)
 
-JavaScript (ES6+)
+- JavaScript (ES6+)
 
-LocalStorage
+- LocalStorage
