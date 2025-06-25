@@ -43,7 +43,7 @@ JS for form validation, modal, and to-do logic
 
 ---
 
-**💡 Key Technologies Used**
+## 💡 Key Technologies Used
 
 - HTML5
 
