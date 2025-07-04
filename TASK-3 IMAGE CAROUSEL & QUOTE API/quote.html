@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Random Quote</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url('https://static.vecteezy.com/system/resources/thumbnails/029/159/347/small_2x/campground-nature-at-night-2d-cartoon-background-full-moon-trees-dark-woods-river-campsite-colorful-aesthetic-illustration-nobody-camping-nighttime-flat-line-wallpaper-art-lofi-image-vector.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #ddd;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(18, 15, 47, 0.7);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .quote-box {
+      background: rgba(18, 15, 47, 0.85);
+      border-radius: 25px;
+      padding: 50px 40px;
+      max-width: 650px;
+      text-align: center;
+      box-shadow:
+        0 0 15px #8a2be2aa,
+        0 0 30px #8a2be2bb,
+        0 0 50px #7b1fa2dd;
+      border: 3px solid transparent;
+      outline: 2px solid #8a2be2;
+      outline-offset: 8px;
+      color: #ccc;
+      transform: scale(0.6) rotateX(-90deg);
+      opacity: 0;
+      animation: floatIn 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .quote-box::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: -8px; right: -8px; bottom: -8px;
+      border-radius: 25px;
+      pointer-events: none;
+      background: linear-gradient(45deg, #8a2be2, #6f42c1, #7a5dc7, #8a2be2);
+      filter: blur(10px);
+      opacity: 0.7;
+      animation: pulseGlow 3s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .quote-box h2 {
+      font-weight: 700;
+      font-size: 1.4em; /* smaller title */
+      margin-bottom: 25px;
+      color: #fff;
+      text-shadow:
+        0 0 10px #fff,
+        0 0 25px #ccc;
+      letter-spacing: 1.1px;
+    }
+
+    .quote-box p {
+      font-size: 2.3em; /* bigger quote text */
+      font-style: italic;
+      line-height: 1.3;
+      color: #fff;
+      text-shadow:
+        0 0 8px #fff,
+        0 0 20px #eee,
+        0 0 35px #bbb;
+      user-select: text;
+    }
+
+    @keyframes floatIn {
+      0% {
+        transform: scale(0.6) rotateX(-90deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) rotateX(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.7;
+        filter: blur(10px);
+      }
+      50% {
+        opacity: 1;
+        filter: blur(15px);
+      }
+    }
+
+    .back-btn {
+      margin-top: 40px;
+      background: transparent;
+      border: 2.5px solid #8a2be2;
+      color: #8a2be2;
+      padding: 12px 30px;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow:
+        0 0 10px #8a2be2,
+        0 0 20px #7a5dc7;
+      user-select: none;
+      z-index: 2;
+    }
+
+    .back-btn:hover {
+      background: #8a2be2;
+      color: #120f2f;
+      box-shadow:
+        0 0 20px #b28aff,
+        0 0 40px #b28affaa;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 700px) {
+      .quote-box {
+        padding: 40px 25px;
+        max-width: 90vw;
+      }
+
+      .quote-box h2 {
+        font-size: 1.1em;
+      }
+
+      .quote-box p {
+        font-size: 1.5em;
+      }
+
+      .back-btn {
+        padding: 10px 25px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="quote-box" id="quote-box">
+    <h2>Quote Generator API</h2>
+    <p id="quote-text"></p>
+  </div>
+
+  <button class="back-btn" onclick="goBack()">← Back</button>
+
+  <script>
+    const quotes = [
+      { q: "Peace comes from within. Do not seek it without.", a: "Buddha" },
+      { q: "The quieter you become, the more you are able to hear.", a: "Rumi" },
+      { q: "Simplicity is the ultimate sophistication.", a: "Leonardo da Vinci" },
+      { q: "Be like water, my friend.", a: "Bruce Lee" },
+      { q: "When you realize nothing is lacking, the whole world belongs to you.", a: "Lao Tzu" },
+      { q: "He who knows others is wise; he who knows himself is enlightened.", a: "Lao Tzu" },
+      { q: "Happiness is not something ready made. It comes from your own actions.", a: "Dalai Lama" }
+    ];
+
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const selected = quotes[randomIndex];
+    document.getElementById("quote-text").innerText = `"${selected.q}" — ${selected.a}`;
+
+    function goBack() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
