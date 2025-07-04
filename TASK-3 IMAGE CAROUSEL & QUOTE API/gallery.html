@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Choose Your Carousel Category</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+
+    .categories, .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+      margin-bottom: 40px;
+    }
+
+    .category-btn {
+      padding: 20px;
+      font-size: 18px;
+      background-color: #222;
+      color: white;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    .category-btn:hover {
+      border: 2px solid white;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px white;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.5); /* Increased zoom intensity */
+    }
+
+    #carousel {
+      display: none;
+      padding: 40px;
+      flex-direction: column;
+      align-items: center;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    #carousel-img {
+      width: 80%;
+      max-width: 900px;
+      border-radius: 12px;
+      box-shadow: 0 10px 60px rgba(0, 0, 0, 0.8);
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 10px;
+    }
+
+    .controls button {
+      padding: 10px 15px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .dots-container {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      background-color: gray;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background-color: white;
+    }
+
+    .nav-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #222;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #444;
+    }
+
+    /* White border glow effect for back-to-gallery button */
+    #back-to-gallery-btn {
+      border: 2px solid white;
+      box-shadow: 0 0 0px white;
+    }
+
+    #back-to-gallery-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px white, 0 0 30px white;
+      background-color: #333;
+    }
+
+    /* Back to index button (top left) */
+    #back-home-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 18px;
+      font-size: 15px;
+      background-color: transparent;
+      border: 2px solid white;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #back-home-btn:hover {
+      background-color: white;
+      color: black;
+      box-shadow: 0 0 10px white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔙 Back to index.html -->
+  <button id="back-home-btn" onclick="location.href='index.html'">← Back</button>
+
+  <h1 id="page-title">Choose Your Carousel Category</h1>
+
+  <!-- PAGE 1: Gallery -->
+  <div class="gallery" id="main-gallery"></div>
+  <button class="nav-btn" id="to-category-page-btn">Go to Categories</button>
+
+  <!-- PAGE 2: Categories -->
+  <div class="categories" id="category-page" style="display:none;">
+    <button class="category-btn" onclick="openCarousel('nature')">Nature Aesthetic</button>
+    <button class="category-btn" onclick="openCarousel('space')">Space & Galaxy</button>
+    <button class="category-btn" onclick="openCarousel('anime')">Anime Vibes</button>
+    <button class="category-btn" onclick="openCarousel('lonely')">Lonely Mood</button>
+    <button class="category-btn" onclick="openCarousel('abstract')">Minimal Abstract</button>
+    <button class="category-btn" onclick="openCarousel('city')">City Lights</button>
+    <button class="category-btn" onclick="openCarousel('tech')">Futuristic Tech</button>
+    <button class="category-btn" onclick="openCarousel('wildlife')">Animals & Wildlife</button>
+  </div>
+  <button class="nav-btn" id="back-to-gallery-btn" style="display:none;">Back to Gallery</button>
+
+  <!-- PAGE 3: Carousel -->
+  <div id="carousel">
+    <img id="carousel-img" src="" alt="Slide" />
+    <div class="controls">
+      <button id="prev">←</button>
+      <div id="dots" class="dots-container"></div>
+      <button id="next">→</button>
+    </div>
+    <button class="nav-btn" id="back-to-categories-btn">Back to Categories</button>
+  </div>
+
+  <script>
+    const imageSets = {
+      nature: ['nature1.jpg', 'nature2.jpg', 'nature3.jpg'],
+      space: ['space1.jpg', 'space2.jpg', 'space3.jpg'],
+      anime: ['anime1.jpg', 'anime2.jpg', 'anime3.jpg'],
+      lonely: ['lonely1.jpg', 'lonely2.jpg', 'lonely3.jpg'],
+      abstract: ['mini1.jpg', 'mini2.jpg', 'mini3.jpg'],
+      city: ['city1.jpg', 'city2.jpg', 'city3.jpg'],
+      tech: ['tech1.jpg', 'tech2.jpg', 'tech3.jpg'],
+      wildlife: ['animal1.jpg', 'animal2.jpg', 'animal3.jpg']
+    };
+
+    const mainGallery = document.getElementById('main-gallery');
+    const categoryPage = document.getElementById('category-page');
+    const toCategoryPageBtn = document.getElementById('to-category-page-btn');
+    const backToGalleryBtn = document.getElementById('back-to-gallery-btn');
+
+    const carousel = document.getElementById('carousel');
+    const carouselImg = document.getElementById('carousel-img');
+    const backToCategoriesBtn = document.getElementById('back-to-categories-btn');
+    const dotsContainer = document.getElementById('dots');
+
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+
+    let currentIndex = 0;
+    let currentImages = [];
+
+    // Load all images initially (Page 1)
+    document.addEventListener('DOMContentLoaded', () => {
+      const allImages = Object.values(imageSets).flat();
+      mainGallery.innerHTML = '';
+      allImages.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = src;
+        mainGallery.appendChild(img);
+      });
+    });
+
+    // Page navigation logic
+    toCategoryPageBtn.addEventListener('click', () => {
+      mainGallery.style.display = 'none';
+      toCategoryPageBtn.style.display = 'none';
+      categoryPage.style.display = 'grid';
+      backToGalleryBtn.style.display = 'inline-block';
+      document.getElementById('page-title').innerText = "Select a Category";
+    });
+
+    backToGalleryBtn.addEventListener('click', () => {
+      categoryPage.style.display = 'none';
+      backToGalleryBtn.style.display = 'none';
+      mainGallery.style.display = 'grid';
+      toCategoryPageBtn.style.display = 'inline-block';
+      document.getElementById('page-title').innerText = "Choose Your Carousel Category";
+    });
+
+    backToCategoriesBtn.addEventListener('click', () => {
+      carousel.style.display = 'none';
+      categoryPage.style.display = 'grid';
+      backToGalleryBtn.style.display = 'inline-block';
+      document.getElementById('page-title').innerText = "Select a Category";
+    });
+
+    function openCarousel(category) {
+      currentImages = imageSets[category];
+      currentIndex = 0;
+      showSlide();
+      categoryPage.style.display = 'none';
+      backToGalleryBtn.style.display = 'none';
+      carousel.style.display = 'flex';
+      document.getElementById('page-title').innerText = category.replace(/^\w/, c => c.toUpperCase());
+    }
+
+    function showSlide() {
+      carouselImg.src = currentImages[currentIndex];
+      updateDots();
+    }
+
+    function updateDots() {
+      dotsContainer.innerHTML = '';
+      currentImages.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === currentIndex ? ' active' : '');
+        dot.onclick = () => {
+          currentIndex = i;
+          showSlide();
+        };
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    prevBtn.onclick = () => {
+      currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+      showSlide();
+    };
+
+    nextBtn.onclick = () => {
+      currentIndex = (currentIndex + 1) % currentImages.length;
+      showSlide();
+    };
+  </script>
+
+</body>
+</html>
