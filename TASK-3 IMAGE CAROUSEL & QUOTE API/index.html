@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="heading">
+            <h1>Enceladus image carousel</h1>
+        </div>
+        <div class="form">
+            <form onsubmit="event.preventDefault(); window.location.href='gallery.html';">
+                <span>
+                    <i class="fa fa-user"></i>
+                    <input type="text" placeholder="Username" required>
+                </span><br>
+                <span>
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Password" required>
+                </span><br>
+                <button type="submit">Login</button>
+            </form>
+
+            <!-- Generate Quote Button -->
+            <div class="quote-section">
+                <p>Feeling philosophical?</p>
+                <button class="generate-quote-btn" onclick="openQuotePage()">Generate Random Quote</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openQuotePage() {
+            window.location.href = 'quote.html';
+        }
+    </script>
+</body>
+</html>
+
+
+
