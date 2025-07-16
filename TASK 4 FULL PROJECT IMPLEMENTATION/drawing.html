@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎨 Drawing Pad</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    h1 {
+      margin-top: 1rem;
+    }
+    .tools {
+      margin: 1rem;
+      display: flex;
+      gap: 10px;
+    }
+    button, input[type="color"], select {
+      padding: 0.5rem 1rem;
+      background: #111;
+      color: #f1f1f1;
+      border: 1px solid #444;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover, input[type="color"]:hover, select:hover {
+      box-shadow: 0 0 8px #ffffff55;
+    }
+    canvas {
+      border: 2px solid #444;
+      background: #111;
+      border-radius: 8px;
+    }
+    .back {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .back:hover {
+      box-shadow: 0 0 10px #fff;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back">⬅️ Back</a>
+  <h1>🎨 Drawing Pad</h1>
+  <div class="tools">
+    <input type="color" id="colorPicker" value="#ffffff">
+    <select id="brushSize">
+      <option value="2">Thin</option>
+      <option value="5" selected>Medium</option>
+      <option value="10">Thick</option>
+    </select>
+    <button onclick="clearCanvas()">🧹 Clear</button>
+    <button onclick="eraseMode()">🩹 Eraser</button>
+  </div>
+  <canvas id="drawingPad" width="800" height="500"></canvas>
+  <script>
+    const canvas = document.getElementById('drawingPad');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const brushSize = document.getElementById('brushSize');
+    let drawing = false;
+    let erase = false;
+
+    canvas.addEventListener('mousedown', () => drawing = true);
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseout', () => drawing = false);
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(e) {
+      if (!drawing) return;
+      ctx.lineWidth = brushSize.value;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = erase ? '#111' : colorPicker.value;
+
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function eraseMode() {
+      erase = !erase;
+    }
+
+    // Initialize background
+    clearCanvas();
+  </script>
+</body>
+</html>
