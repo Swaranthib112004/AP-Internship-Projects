@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image Memories</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --accent: #60a5fa;
+      --note-bg: #1e293b;
+      --border: #334155;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      padding: 1rem;
+      background: var(--note-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    button, input[type="file"] {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      box-shadow: 0 0 10px #ffffff55;
+    }
+    main {
+      padding: 2rem;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .image-card {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.5rem;
+      max-width: 200px;
+      transition: transform 0.3s ease;
+    }
+    .image-card:hover {
+      transform: scale(1.03);
+      border-color: var(--accent);
+    }
+    .image-card img {
+      width: 100%;
+      border-radius: 6px;
+    }
+    .back-btn {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .back-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🖼️ Memory Gallery</h1>
+    <button class="back-btn" onclick="window.location.href='index.html'">⬅ Back to Home</button>
+  </header>
+  <main>
+    <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+    <div class="gallery" id="gallery"></div>
+  </main>
+
+  <script>
+    const gallery = document.getElementById('gallery');
+
+    function loadImages() {
+      const saved = JSON.parse(localStorage.getItem('memories') || '[]');
+      gallery.innerHTML = '';
+      saved.forEach(src => {
+        const div = document.createElement('div');
+        div.className = 'image-card';
+        const img = document.createElement('img');
+        img.src = src;
+        div.appendChild(img);
+        gallery.appendChild(div);
+      });
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const saved = JSON.parse(localStorage.getItem('memories') || '[]');
+        saved.push(e.target.result);
+        localStorage.setItem('memories', JSON.stringify(saved));
+        loadImages();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    window.onload = loadImages;
+  </script>
+</body>
+</html>
