@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Journal</title>
+  <style>
+    :root {
+      --bg: #000;
+      --text: #f1f1f1;
+      --accent: #60a5fa;
+      --note-bg: #111;
+      --border: #444;
+      --hover-glow: 0 0 10px #ffffff88;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: auto;
+    }
+    aside {
+      width: 250px;
+      background: var(--note-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    aside h2 {
+      margin-bottom: 1rem;
+    }
+    aside button,
+    aside a {
+      background: none;
+      border: 1px solid #ffffff44;
+      padding: 0.6rem 1rem;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    aside button:hover,
+    aside a:hover {
+      background: #1f1f1f;
+      box-shadow: var(--hover-glow);
+      border-color: #ffffffaa;
+    }
+    aside .tag {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--note-bg);
+    }
+    .search {
+      width: 60%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .notes-list {
+      display: flex;
+      flex-grow: 1;
+    }
+    .list {
+      width: 300px;
+      border-right: 1px solid var(--border);
+      padding: 1rem;
+      overflow-y: auto;
+      background: var(--note-bg);
+    }
+    .note-item {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      background: var(--bg);
+    }
+    .note-item.active {
+      border: 2px solid var(--accent);
+    }
+    .editor {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .editor input,
+    .editor textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid var(--border);
+      background: var(--note-bg);
+      color: var(--text);
+      border-radius: 5px;
+    }
+    .editor .tags {
+      margin-bottom: 0.5rem;
+    }
+    .editor .tags input {
+      width: auto;
+      display: inline-block;
+    }
+    .actions button {
+      margin-right: 0.5rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .actions .cancel {
+      background: gray;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <h2>🌌 REFLECTORA THOUGHT NOTES</h2>
+    <button onclick="filterNotes('all')">📓 All Notes</button>
+    <button onclick="filterNotes('archived')">🗃️ Archived</button>
+    <div class="tag">📂 Tags</div>
+    <div id="tagList"></div>
+    <div class="tag">🌟 Features</div>
+    <a href="mood.html" target="_blank">😊 Mood Tracker</a>
+    <a href="drawing.html" target="_blank">🎨 Drawing Pad</a>
+    <a href="audiovideo.html" target="_blank">📹 Audio/Video Notes</a>
+    <a href="affirmation.html" target="_blank">💬 Affirmations</a>
+    <a href="pomodoro.html" target="_blank">⏱️ Pomodoro Timer</a>
+    <a href="gratitude.html" target="_blank">🙏 Gratitude</a>
+    <a href="habit.html" target="_blank">✅ Habit Tracker</a>
+    <a href="image.html" target="_blank">🖼️ Image Notes</a>
+  </aside>
+  <main>
+    <header>
+      <input type="text" id="search" class="search" placeholder="Search title, tags...">
+    </header>
+    <div class="notes-list">
+      <div class="list">
+        <button class="actions" onclick="createNote()">+ Create New Note</button>
+        <div id="notesList"></div>
+      </div>
+      <div class="editor" id="editor" style="display:none;">
+        <input id="noteTitle" placeholder="Title">
+        <div class="tags">Tags: <input id="noteTags" placeholder="e.g., Dev, React"></div>
+        <textarea id="noteBody" rows="12" placeholder="Write your note here..."></textarea>
+        <div class="actions">
+          <button onclick="saveNote()">Save Note</button>
+          <button class="cancel" onclick="cancelEdit()">Cancel</button>
+          <button onclick="deleteNote()">Delete</button>
+          <button onclick="archiveNote()">Archive</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+    let activeNote = null;
+    let currentFilter = "all";
+
+    const notesList = document.getElementById("notesList");
+    const tagList = document.getElementById("tagList");
+    const searchInput = document.getElementById("search");
+
+    function renderNotes() {
+      const filter = searchInput.value.toLowerCase();
+      notesList.innerHTML = "";
+
+      const filtered = notes.filter(note =>
+        (currentFilter === "all" ? !note.archived : note.archived) &&
+        (note.title.toLowerCase().includes(filter) || note.tags.join(",").toLowerCase().includes(filter))
+      );
+
+      filtered.forEach((note, i) => {
+        const div = document.createElement("div");
+        div.className = "note-item" + (i === activeNote ? " active" : "");
+        div.innerText = `${note.title || "(Untitled)"}\n${note.tags.join(", ")}`;
+        div.onclick = () => openEditor(i);
+        notesList.appendChild(div);
+      });
+
+      renderTags();
+    }
+
+    function renderTags() {
+      const tags = [...new Set(notes.flatMap(n => n.tags))];
+      tagList.innerHTML = "";
+      tags.forEach(tag => {
+        const btn = document.createElement("button");
+        btn.textContent = tag;
+        btn.onclick = () => {
+          searchInput.value = tag;
+          renderNotes();
+        };
+        tagList.appendChild(btn);
+      });
+    }
+
+    function openEditor(i) {
+      activeNote = i;
+      document.getElementById("editor").style.display = "block";
+      const n = notes[i];
+      noteTitle.value = n.title;
+      noteBody.value = n.body;
+      noteTags.value = n.tags.join(", ");
+    }
+
+    function createNote() {
+      const newNote = { title: "", body: "", tags: [], archived: false, date: new Date().toISOString() };
+      notes.unshift(newNote);
+      activeNote = 0;
+      saveData();
+      openEditor(0);
+    }
+
+    function saveNote() {
+      const n = notes[activeNote];
+      n.title = noteTitle.value;
+      n.body = noteBody.value;
+      n.tags = noteTags.value.split(",").map(s => s.trim()).filter(Boolean);
+      n.date = new Date().toISOString();
+      saveData();
+      cancelEdit();
+    }
+
+    function cancelEdit() {
+      document.getElementById("editor").style.display = "none";
+      renderNotes();
+    }
+
+    function deleteNote() {
+      if (confirm("Delete this note?")) {
+        notes.splice(activeNote, 1);
+        activeNote = null;
+        saveData();
+        cancelEdit();
+      }
+    }
+
+    function archiveNote() {
+      notes[activeNote].archived = !notes[activeNote].archived;
+      saveData();
+      cancelEdit();
+    }
+
+    function saveData() {
+      localStorage.setItem("notes", JSON.stringify(notes));
+      renderNotes();
+    }
+
+    function filterNotes(type) {
+      currentFilter = type;
+      renderNotes();
+    }
+
+    searchInput.addEventListener("input", renderNotes);
+    renderNotes();
+  </script>
+</body>
+</html>
