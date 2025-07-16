@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mood Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: #60a5fa;
+      margin-bottom: 1rem;
+    }
+    .moods {
+      display: flex;
+      gap: 1rem;
+      font-size: 2rem;
+    }
+    .moods span {
+      cursor: pointer;
+      border: 2px solid transparent;
+      padding: 0.5rem;
+      border-radius: 10px;
+      transition: border 0.3s;
+    }
+    .moods span:hover {
+      border: 2px solid #60a5fa;
+    }
+    .quote {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      text-align: center;
+      max-width: 500px;
+    }
+    .back-btn {
+      margin-top: 2rem;
+      background: #60a5fa;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select Your Mood</h1>
+  <div class="moods">
+    <span onclick="showQuote('happy')">😃</span>
+    <span onclick="showQuote('sad')">😞</span>
+    <span onclick="showQuote('angry')">😡</span>
+    <span onclick="showQuote('excited')">😄</span>
+    <span onclick="showQuote('anxious')">😰</span>
+  </div>
+  <div class="quote" id="quote"></div>
+  <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
+  <script>
+    const quotes = {
+      happy: "Happiness is not something ready made. It comes from your own actions. — Dalai Lama",
+      sad: "Tough times never last, but tough people do. — Robert H. Schuller",
+      angry: "For every minute you remain angry, you give up sixty seconds of peace of mind. — Ralph Waldo Emerson",
+      excited: "The future belongs to those who believe in the beauty of their dreams. — Eleanor Roosevelt",
+      anxious: "You don’t have to control your thoughts. You just have to stop letting them control you. — Dan Millman"
+    };
+
+    function showQuote(mood) {
+      document.getElementById("quote").textContent = quotes[mood];
+    }
+  </script>
+</body>
+</html>
