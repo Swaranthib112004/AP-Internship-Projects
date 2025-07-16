@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro Timer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .timer-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 10px #ffffff22;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    #timer {
+      font-size: 2.5rem;
+      margin: 1rem 0;
+    }
+    button {
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      margin: 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      box-shadow: 0 0 10px #ffffff33;
+    }
+  </style>
+</head>
+<body>
+  <div class="timer-box">
+    <h1>🍅 Pomodoro Timer</h1>
+    <div id="timer">25:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="stopTimer()">Stop</button>
+    <button onclick="savePomodoro()">Save</button>
+    <button onclick="goBack()">← Back</button>
+  </div>
+
+  <script>
+    let time = 25 * 60;
+    let timerInterval = null;
+
+    function updateTimerDisplay() {
+      const min = String(Math.floor(time / 60)).padStart(2, '0');
+      const sec = String(time % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${min}:${sec}`;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (time > 0) {
+          time--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function savePomodoro() {
+      const timestamp = new Date().toLocaleString();
+      let saved = JSON.parse(localStorage.getItem("pomodoros") || "[]");
+      saved.push({ timeLeft: time, savedAt: timestamp });
+      localStorage.setItem("pomodoros", JSON.stringify(saved));
+      alert("Pomodoro saved!");
+    }
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+
+    updateTimerDisplay();
+  </script>
+</body>
+</html>
