@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reflectora: Habit Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #f1f1f1;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+    h2 {
+      color: #60a5fa;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+      transform: scale(1.2);
+    }
+    button {
+      margin-top: 1rem;
+      background: #60a5fa;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      box-shadow: 0 0 10px #60a5fa88;
+    }
+    .back {
+      display: inline-block;
+      margin-top: 2rem;
+      text-decoration: none;
+      color: #60a5fa;
+      border: 1px solid #60a5fa;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+    }
+    .back:hover {
+      box-shadow: 0 0 10px #60a5fa88;
+    }
+    #savedHabits {
+      margin-top: 2rem;
+      background: #111;
+      padding: 1rem;
+      border: 1px solid #333;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>✅ Habit Tracker</h2>
+  
+  <form id="habitForm">
+    <label><input type="checkbox" name="habit" value="Meditate"> Meditate</label>
+    <label><input type="checkbox" name="habit" value="Exercise"> Exercise</label>
+    <label><input type="checkbox" name="habit" value="Read"> Read</label>
+    <label><input type="checkbox" name="habit" value="Journal"> Journal</label>
+    <label><input type="checkbox" name="habit" value="Sleep early"> Sleep Early</label>
+    <label><input type="checkbox" name="habit" value="Walk"> Walk</label>
+    <label><input type="checkbox" name="habit" value="Stretch"> Stretch</label>
+    <label><input type="checkbox" name="habit" value="Hydrate"> Hydrate</label>
+    <label><input type="checkbox" name="habit" value="Plan day"> Plan Day</label>
+    <button type="button" onclick="saveHabits()">💾 Save Habits</button>
+  </form>
+
+  <div id="savedHabits"></div>
+
+  <a class="back" href="index.html">⬅️ Back to Home</a>
+
+  <script>
+    function saveHabits() {
+      const selected = Array.from(document.querySelectorAll('input[name="habit"]:checked')).map(el => el.value);
+      localStorage.setItem('savedHabits', JSON.stringify(selected));
+      displayHabits();
+      alert("Habits saved!");
+    }
+
+    function displayHabits() {
+      const saved = JSON.parse(localStorage.getItem('savedHabits') || "[]");
+      const container = document.getElementById("savedHabits");
+      if (saved.length > 0) {
+        container.innerHTML = "<h3>📌 Saved Habits:</h3><ul>" +
+          saved.map(h => `<li>${h}</li>`).join('') +
+          "</ul>";
+      } else {
+        container.innerHTML = "";
+      }
+    }
+
+    displayHabits();
+  </script>
+
+</body>
+</html>
